@@ -1,0 +1,10 @@
+---
+interface Props { label: string; id?: string; tone?: 'bg' | 'white' | 'dark'; tick?: boolean }
+const { label, id, tone = 'bg', tick = true } = Astro.props;
+---
+<section class:list={['band', tone]} id={id} aria-labelledby={id ? `${id}-label` : undefined}>
+  <div class="wrap split">
+    <h2 class:list={['label', { tick }]} id={id ? `${id}-label` : undefined}>{label}</h2>
+    <div class="content"><slot /></div>
+  </div>
+</section>

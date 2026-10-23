@@ -2,7 +2,7 @@
 
 Rebuild of [rofcap.com](https://www.rofcap.com/) — the public site of **Ring of Fire Capital Ventures Limited (ROFCAP)**, a Hong Kong-domiciled investment firm and venture platform — on a version-controlled, code-first stack, using the ROFCAP design system.
 
-> **Status:** Phase 1 built (v0.2.0), pending real assets and legal sign-off. `docs/` remains the plan of record.
+> **Status:** v0.3.0 built to the "rofcap.com — Site Directions" design (Home, About, OBSIDIAN index). Pending design-system assets, article pages and legal sign-off. `docs/CONTENT.md` describes the old live site and is superseded for copy by `src/content/`.
 
 ## Why this rebuild
 

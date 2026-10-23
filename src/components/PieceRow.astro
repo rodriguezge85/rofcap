@@ -1,0 +1,13 @@
+---
+import { seriesLabel } from '../content/obsidian';
+import type { Piece } from '../content/obsidian';
+interface Props { piece: Piece }
+const { piece } = Astro.props;
+const meta = [piece.date, piece.minutes ? `${piece.minutes} min read` : undefined].filter(Boolean).join(' · ');
+---
+<article class="piece" data-series={piece.series}>
+  <p class="kicker">{seriesLabel(piece.series)}</p>
+  <h3>{piece.href ? <a href={piece.href}>{piece.title}</a> : piece.title}</h3>
+  <p>{piece.standfirst}</p>
+  {meta && <p class="meta">{meta}</p>}
+</article>

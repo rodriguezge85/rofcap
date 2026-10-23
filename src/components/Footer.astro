@@ -2,12 +2,19 @@
 import { site } from '../content/site';
 ---
 <footer>
-  <div class="wrap">
-    <img src="/rofcap-mark-96.png" alt="" width="38" height="38" />
-    <div class="footer-text">
-      <p><strong>{site.legalName}</strong></p>
-      <p>{site.address.lines.join(', ')}</p>
-      <p>{site.notice} · <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+  <div class="contact-bar" id="contact">
+    <div class="wrap contact-row">
+      <p>{site.legalName} · {site.address.line}</p>
+      <a class="contact-mail" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+  </div>
+  <div class="notice">
+    <div class="wrap notice-row">
+      <img src="/rofcap-mark-96.png" alt="" width="38" height="38" />
+      <div class="footer-text">
+        <p><strong>{site.notice.lead}</strong> {site.notice.body}</p>
+        <p>© 2026 {site.legalName} · rofcap.com · {site.email} · <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></p>
+      </div>
     </div>
   </div>
 </footer>

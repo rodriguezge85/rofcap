@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Photo from '../components/Photo.astro';
+import { obsidian, seriesLabel } from '../content/obsidian';
+import { site } from '../content/site';
+
+const featured = obsidian.pieces.find((p) => p.featured)!;
+const rest = obsidian.pieces.filter((p) => p !== featured);
+const meta = (p: { date?: string; minutes?: number; author?: string }) =>
+  [p.date, p.minutes ? `${p.minutes} min read` : undefined, p.author].filter(Boolean).join(' · ');
+---
+<BaseLayout title={`OBSIDIAN · ${site.name}`} description={`${obsidian.byline}. ${obsidian.tagline}`} header="light" current="obsidian">
+  <div class="ob-head">
+    <Photo position="center 85%" opacity={0.45} />
+    <div class="ob-band">
+      <div class="wrap ob-band-row">
+        <span class="ob-mark"><img src="/rofcap-mark-96.png" alt="" width="46" height="46" /></span>
+        <div>
+          <h1 class="wordmark">OBSIDIAN</h1>
+          <p class="on-dark-small">{obsidian.byline}</p>
+        </div>
+        <p class="on-dark-small tagline">{obsidian.tagline}</p>
+      </div>
+    </div>
+    <div class="ob-intro">
+      <div class="wrap">
+        <p class="kicker">The channel</p>
+        <h2>{obsidian.channelTitle}</h2>
+        <p class="on-dark-lead">{obsidian.channelText}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap ob-body">
+    <nav class="series" aria-label="Series">
+      <h2 class="sub-label">Series</h2>
+      <ul>
+        <li><a href="/obsidian/" data-filter="all" aria-current="true">All pieces</a></li>
+        {obsidian.series.map((s) => <li><a href={`/obsidian/?series=${s.slug}`} data-filter={s.slug}>{s.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="feed">
+      <article class="callout featured piece" data-series={featured.series}>
+        <p class="kicker">Featured · {seriesLabel(featured.series)}</p>
+        <h3>{featured.title}</h3>
+        <p>{featured.standfirst}</p>
+        <p class="meta">{meta(featured)}</p>
+      </article>
+      <div class="rows">
+        {rest.map((p) => (
+          <article class="row piece" data-series={p.series}>
+            <div class="row-meta">
+              {meta(p) && <p class="meta">{meta(p)}</p>}
+              <p class="kicker">{seriesLabel(p.series)}</p>
+            </div>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.standfirst}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="empty" hidden>No pieces in this series yet.</p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Progressive enhancement: filter pieces by ?series=. Without JS every piece is shown.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-filter]')];
+  const pieces = [...document.querySelectorAll<HTMLElement>('.feed .piece')];
+  const empty = document.querySelector<HTMLElement>('.empty');
+  const apply = (slug: string) => {
+    let shown = 0;
+    for (const el of pieces) {
+      const on = slug === 'all' || el.dataset.series === slug;
+      el.hidden = !on;
+      if (on) shown++;
+    }
+    links.forEach((a) => (a.dataset.filter === slug ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+    if (empty) empty.hidden = shown > 0;
+  };
+  apply(new URLSearchParams(location.search).get('series') ?? 'all');
+  links.forEach((a) =>
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      history.replaceState(null, '', a.getAttribute('href'));
+      apply(a.dataset.filter ?? 'all');
+    }),
+  );
+</script>

@@ -1,0 +1,23 @@
+---
+import { site } from '../content/site';
+interface Props { variant?: 'light' | 'overlay'; current?: string }
+const { variant = 'light', current = '' } = Astro.props;
+---
+<header class:list={['site-header', variant]}>
+  <div class="wrap header-row">
+    <a class="brand" href="/" aria-label={`${site.legalName}, home`}>
+      <img src="/rofcap-mark-96.png" alt="" width="44" height="44" />
+      <span>
+        <span class="brand-word">{site.shortName}</span>
+        <span class="brand-full">{site.name}</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        {site.nav.map((item) => (
+          <li><a href={item.href} aria-current={item.key === current ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

@@ -1,36 +1,59 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import { site } from '../content/site';
+import Section from '../components/Section.astro';
+import Photo from '../components/Photo.astro';
+import Framework from '../components/Framework.astro';
+import PieceRow from '../components/PieceRow.astro';
+import { home } from '../content/site';
+import { obsidian } from '../content/obsidian';
 
-// Renders **bold** runs from the copy deck as <strong>.
-const withEmphasis = (text: string) =>
-  text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? `<strong>${part}</strong>` : part)).join('');
+const recent = obsidian.pieces.slice(0, 3);
 ---
-<BaseLayout>
-  <Hero />
-  <div class="wrap">
-    <section aria-labelledby="firm">
-      <h2 class="section-heading" id="firm">The Firm</h2>
-      <div class="card statement">
-        {site.statement.map((p) => <p set:html={withEmphasis(p)} />)}
+<BaseLayout header="overlay">
+  <div class="hero">
+    <Photo eager position="center 30%" opacity={0.6} />
+    <div class="wrap split hero-copy">
+      <div class="hero-text content-start">
+        <p class="eyebrow">{home.eyebrow}</p>
+        <h1>{home.title}</h1>
+        <p class="hero-sub">{home.tagline}</p>
       </div>
-    </section>
-
-    <section aria-labelledby="contact">
-      <h2 class="section-heading" id="contact">Contact</h2>
-      <div class="card contact">
-        <div>
-          <h3>{site.legalName}</h3>
-          <address>
-            {site.address.lines.map((line) => <span>{line}<br /></span>)}
-          </address>
-        </div>
-        <div>
-          <h3>Follow</h3>
-          <p><a href={site.linkedin} target="_blank" rel="noopener noreferrer">{site.shortName} on LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></p>
-        </div>
-      </div>
-    </section>
+    </div>
   </div>
+
+  <Section label="Who we are" id="who">
+    <p class="lead">{home.lead}</p>
+    <p>{home.body}</p>
+    <ul class="cols three ruled">
+      {home.services.map((s) => (
+        <li><h3>{s.title}</h3><p>{s.text}</p></li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section label="The Ring of Fire" id="ring" tone="white">
+    <p class="lead">{home.ring.lead}</p>
+    <dl class="stats">
+      {home.ring.stats.map((s) => (
+        <div><dt>{s.label}</dt><dd class="num stat">{s.value}</dd></div>
+      ))}
+    </dl>
+    <p>{home.ring.body}</p>
+  </Section>
+
+  <Framework id="framework" variant="home" />
+
+  <section class="band dark" id="obsidian" aria-labelledby="obsidian-label">
+    <div class="wrap split">
+      <div class="label-col">
+        <h2 class="wordmark" id="obsidian-label">OBSIDIAN</h2>
+        <p class="on-dark-small">{obsidian.byline}</p>
+        <p class="on-dark-lead">{obsidian.tagline}</p>
+        <a class="pill" href="/obsidian/">All pieces</a>
+      </div>
+      <div class="content">
+        {recent.map((piece) => <PieceRow piece={piece} />)}
+      </div>
+    </div>
+  </section>
 </BaseLayout>

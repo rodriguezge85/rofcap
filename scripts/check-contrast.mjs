@@ -18,6 +18,8 @@ const pairs = [
   ['muted', 'bg', 4.5], ['navy', 'card', 4.5], ['navy', 'bg', 4.5], ['navy-700', 'card', 4.5],
   ['white', 'obsidian', 4.5], ['lava', 'obsidian', 3], ['on-dark-body', 'navy-900', 4.5],
   ['on-dark-muted', 'navy-900', 4.5], ['lava-700', 'lava-50', 4.5],
+  ['on-dark-item', 'obsidian', 4.5], ['on-dark-muted', 'obsidian', 4.5], ['lava-300', 'obsidian', 4.5],
+  ['lava', 'card-soft', 3], ['lava', 'bg', 3], ['muted', 'card-soft', 4.5],
 ];
 
 let failed = false;

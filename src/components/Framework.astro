@@ -1,0 +1,49 @@
+---
+import Section from './Section.astro';
+import { framework } from '../content/site';
+interface Props { id?: string; variant: 'home' | 'about' }
+const { id, variant } = Astro.props;
+const paragraphs = variant === 'home' ? framework.homeParagraphs : framework.aboutParagraphs;
+---
+<Section label="The Volcanic Framework" id={id} tone={variant === 'home' ? 'bg' : 'white'}>
+  <h3 class="fw-heading">{framework.heading}</h3>
+  {paragraphs.map((p) => <p>{p}</p>)}
+
+  {variant === 'home' ? (
+    <ol class="stage-cards" aria-label="The seven stages">
+      {framework.stages.map((s) => (
+        <li>
+          <span class="num stage-n">{s.n}</span>
+          <h4>{s.name}</h4>
+          <p>{s.card}</p>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <>
+      <h3 class="sub-label" id="stages">The seven stages</h3>
+      <ol class="stage-rows" aria-labelledby="stages">
+        {framework.stages.map((s) => (
+          <li>
+            <span class="num stage-n">{s.n}</span>
+            <h4>{s.name}</h4>
+            <p>{s.row}</p>
+          </li>
+        ))}
+      </ol>
+    </>
+  )}
+
+  <div class:list={['fw-lower', variant]}>
+    <div class="callout">
+      <h4>{variant === 'home' ? framework.caldera.title : framework.caldera.aboutTitle}</h4>
+      <p>{variant === 'home' ? framework.caldera.homeText : framework.caldera.aboutText}</p>
+    </div>
+    <div class="disciplines">
+      <h3 class="sub-label">Four disciplines, one lens</h3>
+      <ul>
+        {framework.disciplines.map((d) => <li><strong>{d.lead}</strong> {d.text}</li>)}
+      </ul>
+    </div>
+  </div>
+</Section>

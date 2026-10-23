@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Framework from '../components/Framework.astro';
+import { about, site } from '../content/site';
+---
+<BaseLayout title={`About the firm · ${site.name}`} description="Where the plates meet, pressure builds before it shows. How Ring of Fire Capital Ventures works along the Pacific Ring of Fire, and the Volcanic Framework behind its investment process." header="light" current="about">
+  <div class="titlebar">
+    <div class="wrap">
+      <h1>{about.title}</h1>
+      <p class="doc-subtitle">{about.subtitle}</p>
+    </div>
+  </div>
+
+  <Section label="The Ring of Fire" id="ring" tick={false}>
+    {about.ring.map((p, i) => <p class={i === 0 ? 'lead' : undefined}>{p}</p>)}
+  </Section>
+
+  <Section label="What we do" id="what" tick={false}>
+    <ul class="cards three">
+      {about.services.map((s) => <li class="card"><h3>{s.title}</h3><p>{s.text}</p></li>)}
+    </ul>
+    <ul class="cols three ruled small">
+      {about.sectors.map((s) => <li><h3>{s.title}</h3><p>{s.text}</p></li>)}
+    </ul>
+  </Section>
+
+  <Framework id="framework" variant="about" />
+</BaseLayout>

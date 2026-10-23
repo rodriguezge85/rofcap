@@ -4,6 +4,21 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-23
+
+### Changed
+- Rebuilt to the "rofcap.com — Site Directions" design (supersedes the single-page parity site and the live-site copy in `docs/CONTENT.md`).
+- Routes: `/` (photo hero, Who we are, The Ring of Fire, Volcanic Framework, OBSIDIAN preview), `/about/`, `/obsidian/` (series filter, progressive enhancement), `/404`.
+- Header with Primary nav (About, Framework, OBSIDIAN, Contact); footer with address, `info@rofcap.com` and the longer disclaimer exactly as designed.
+- Copy lives in `src/content/site.ts` and `src/content/obsidian.ts`.
+
+### Notes for review
+- Design chose Home option 2 of 3 (photo hero). Options 1 and 3 in the PDF are not built.
+- The footer disclaimer states ROFCAP is not licensed by the SFC; counsel must approve (PRD Q2).
+- OBSIDIAN pieces show no dates and are not linked until published (the design shows [DATE] placeholders). No article pages yet.
+- Lava-red band photograph (`lava-crust`) is unavailable; the eruption photo is reused, cropped, in the OBSIDIAN header.
+- Tests: 18 checks (all pages: copy parity, links, axe structure, metadata, headers, lava text rule).
+
 ### Added
 - Real assets from the live site: hero photograph (`src/assets/photography/eruption-night.webp`, the live site's AdobeStock image used as stand-in for the design system's `eruption-night`) and the ROFCAP mark (`public/rofcap-mark.png`, `rofcap-mark-96.png`) isolated from the live logo JPG onto transparency; favicon and apple-touch icon on charcoal; OG card now uses the photo and real mark.
 - Still to replace with design-system masters: mark (live source is only ~254 px), `eruption-night` original, and confirm the AdobeStock licence covers this use.

@@ -1,0 +1,15 @@
+---
+import { Image } from 'astro:assets';
+interface Props { position?: string; opacity?: number; eager?: boolean }
+const { position = 'center', opacity = 0.55, eager = false } = Astro.props;
+const photos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/photography/eruption-night.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+const photo = Object.values(photos)[0]?.default;
+---
+{photo && (
+  <Image class="photo" src={photo} alt="" widths={[640, 1280, 1920]} sizes="100vw" format="webp"
+    loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'}
+    style={`object-position:${position};opacity:${opacity}`} />
+)}

@@ -9,6 +9,7 @@
     "dev": "npm run tokens && astro dev",
     "build": "npm run tokens && astro build",
     "preview": "astro preview",
+    "preview:private": "PUBLIC_NOINDEX=true astro build && astro preview --port 4321",
     "check": "npm run tokens && npm run check:contrast && astro check",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "verify": "npm run check && npm run build && npm test",
