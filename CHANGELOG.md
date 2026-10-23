@@ -4,6 +4,15 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-23
+
+### Added
+- OBSIDIAN content collection (`src/content.config.ts`, `src/content/obsidian/*.md`) with a validated schema and a `status` model (announced / placeholder / published) plus `draft`.
+- Article template at `/obsidian/[slug]/`: OBSIDIAN band header, kicker, title, standfirst, byline, body, standard disclaimer plus the commentary line (FR-23), previous/next, back link.
+- First article, "Where pressure builds before the market notices", with a clearly marked DRAFT placeholder body (visible chip, banner, `noindex`, excluded from the sitemap). Replace the body before publishing.
+- Index and home preview now read from the collection; only pieces with a page are linked.
+- Tests: 22 (article schema, T-31 draft/announced exclusion, article template, sitemap).
+
 ## [0.3.0] - 2026-10-23
 
 ### Changed

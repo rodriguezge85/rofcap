@@ -6,8 +6,9 @@ import Framework from '../components/Framework.astro';
 import PieceRow from '../components/PieceRow.astro';
 import { home } from '../content/site';
 import { obsidian } from '../content/obsidian';
+import { getPieces } from '../lib/obsidian';
 
-const recent = obsidian.pieces.slice(0, 3);
+const recent = (await getPieces()).slice(0, 3);
 ---
 <BaseLayout header="overlay">
   <div class="hero">

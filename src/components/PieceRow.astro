@@ -1,9 +1,9 @@
 ---
 import { seriesLabel } from '../content/obsidian';
-import type { Piece } from '../content/obsidian';
+import { metaLine, type Piece } from '../lib/obsidian';
 interface Props { piece: Piece }
 const { piece } = Astro.props;
-const meta = [piece.date, piece.minutes ? `${piece.minutes} min read` : undefined].filter(Boolean).join(' · ');
+const meta = metaLine({ date: piece.date, minutes: piece.minutes });
 ---
 <article class="piece" data-series={piece.series}>
   <p class="kicker">{seriesLabel(piece.series)}</p>

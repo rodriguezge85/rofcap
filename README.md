@@ -46,6 +46,19 @@ npm run verify            # check + build + test
 npm run og                # regenerate public/og-card.png
 ```
 
+## Adding an OBSIDIAN article
+
+Articles are Markdown files in `src/content/obsidian/` (schema in `src/content.config.ts`, validated at build).
+
+| Field | Notes |
+| --- | --- |
+| `title`, `standfirst`, `series`, `order` | required; `series` is one of the five slugs in `src/content/obsidian.ts` |
+| `status` | `announced` (listed, no page, default) · `placeholder` (page live, marked draft, noindex, not in sitemap) · `published` |
+| `draft: true` | excluded from production builds entirely |
+| `date`, `minutes`, `author`, `featured` | optional; `featured` is used once |
+
+To publish: write the body, remove the draft banner, set `status: published` and add a `date`. Every article page closes with the standard disclaimer automatically.
+
 ## Target repository layout
 
 ```

@@ -1,27 +1,16 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Photo from '../components/Photo.astro';
-import { obsidian, seriesLabel } from '../content/obsidian';
-import { site } from '../content/site';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ObsidianBand from '../../components/ObsidianBand.astro';
+import { obsidian, seriesLabel } from '../../content/obsidian';
+import { site } from '../../content/site';
+import { getPieces, metaLine } from '../../lib/obsidian';
 
-const featured = obsidian.pieces.find((p) => p.featured)!;
-const rest = obsidian.pieces.filter((p) => p !== featured);
-const meta = (p: { date?: string; minutes?: number; author?: string }) =>
-  [p.date, p.minutes ? `${p.minutes} min read` : undefined, p.author].filter(Boolean).join(' · ');
+const pieces = await getPieces();
+const featured = pieces.find((p) => p.featured) ?? pieces[0];
+const rest = pieces.filter((p) => p !== featured);
 ---
 <BaseLayout title={`OBSIDIAN · ${site.name}`} description={`${obsidian.byline}. ${obsidian.tagline}`} header="light" current="obsidian">
-  <div class="ob-head">
-    <Photo position="center 85%" opacity={0.45} />
-    <div class="ob-band">
-      <div class="wrap ob-band-row">
-        <span class="ob-mark"><img src="/rofcap-mark-96.png" alt="" width="46" height="46" /></span>
-        <div>
-          <h1 class="wordmark">OBSIDIAN</h1>
-          <p class="on-dark-small">{obsidian.byline}</p>
-        </div>
-        <p class="on-dark-small tagline">{obsidian.tagline}</p>
-      </div>
-    </div>
+  <ObsidianBand>
     <div class="ob-intro">
       <div class="wrap">
         <p class="kicker">The channel</p>
@@ -29,7 +18,7 @@ const meta = (p: { date?: string; minutes?: number; author?: string }) =>
         <p class="on-dark-lead">{obsidian.channelText}</p>
       </div>
     </div>
-  </div>
+  </ObsidianBand>
 
   <div class="wrap ob-body">
     <nav class="series" aria-label="Series">
@@ -43,19 +32,20 @@ const meta = (p: { date?: string; minutes?: number; author?: string }) =>
     <div class="feed">
       <article class="callout featured piece" data-series={featured.series}>
         <p class="kicker">Featured · {seriesLabel(featured.series)}</p>
-        <h3>{featured.title}</h3>
+        <h3>{featured.href ? <a href={featured.href}>{featured.title}</a> : featured.title}</h3>
         <p>{featured.standfirst}</p>
-        <p class="meta">{meta(featured)}</p>
+        <p class="meta">{metaLine(featured)}</p>
+        {featured.href && <p class="read"><a href={featured.href}>Read the piece →</a></p>}
       </article>
       <div class="rows">
         {rest.map((p) => (
           <article class="row piece" data-series={p.series}>
             <div class="row-meta">
-              {meta(p) && <p class="meta">{meta(p)}</p>}
+              {metaLine(p) && <p class="meta">{metaLine(p)}</p>}
               <p class="kicker">{seriesLabel(p.series)}</p>
             </div>
             <div>
-              <h3>{p.title}</h3>
+              <h3>{p.href ? <a href={p.href}>{p.title}</a> : p.title}</h3>
               <p>{p.standfirst}</p>
             </div>
           </article>

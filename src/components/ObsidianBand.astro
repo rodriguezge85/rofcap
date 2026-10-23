@@ -1,0 +1,21 @@
+---
+import Photo from './Photo.astro';
+import { obsidian } from '../content/obsidian';
+// The OBSIDIAN masthead: photograph, wordmark band and lava rule. Slot holds the intro / article header.
+interface Props { as?: 'h1' | 'p' }
+const { as: Tag = 'h1' } = Astro.props;
+---
+<div class="ob-head">
+  <Photo position="center 85%" opacity={0.45} />
+  <div class="ob-band">
+    <div class="wrap ob-band-row">
+      <span class="ob-mark"><img src="/rofcap-mark-96.png" alt="" width="46" height="46" /></span>
+      <div>
+        {Tag === 'h1' ? <h1 class="wordmark">OBSIDIAN</h1> : <p class="wordmark"><a href="/obsidian/">OBSIDIAN</a></p>}
+        <p class="on-dark-small">{obsidian.byline}</p>
+      </div>
+      <p class="on-dark-small tagline">{obsidian.tagline}</p>
+    </div>
+  </div>
+  <slot />
+</div>

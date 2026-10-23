@@ -7,7 +7,19 @@ import axe from 'axe-core';
 import { site, home, about, framework } from '../src/content/site.ts';
 import { obsidian } from '../src/content/obsidian.ts';
 
+// Front matter of every article, parsed without Astro (flat key: value pairs only).
+const articles = readdirSync('src/content/obsidian').filter((f) => f.endsWith('.md')).map((f) => {
+  const [, fm, ...body] = readFileSync(`src/content/obsidian/${f}`, 'utf8').split('---');
+  const data = Object.fromEntries(fm.trim().split('\n').map((l) => { const i = l.indexOf(':'); return [l.slice(0, i).trim(), l.slice(i + 1).trim().replace(/^"|"$/g, '')]; }));
+  return { id: f.replace(/\.md$/, ''), data, body: body.join('---') };
+});
+const live = articles.filter((a) => a.data.status !== 'announced' && a.data.draft !== 'true');
+
 const pages = { '/': 'dist/index.html', '/about/': 'dist/about/index.html', '/obsidian/': 'dist/obsidian/index.html' };
+for (const a of readdirSync('src/content/obsidian').filter((f) => f.endsWith('.md'))) {
+  const id = a.replace(/\.md$/, '');
+  if (existsSync(`dist/obsidian/${id}/index.html`)) pages[`/obsidian/${id}/`] = `dist/obsidian/${id}/index.html`;
+}
 const load = (path) => {
   const html = readFileSync(pages[path], 'utf8');
   const dom = new JSDOM(html, { runScripts: 'outside-only' });
@@ -53,8 +65,14 @@ test('T-02c about copy matches', () => {
 test('T-02d obsidian index lists all pieces with series filter', () => {
   const { doc } = load('/obsidian/');
   assert.equal(text(doc.querySelector('h1')), 'OBSIDIAN');
-  assert.equal(doc.querySelectorAll('.feed .piece').length, obsidian.pieces.length);
-  for (const p of obsidian.pieces) assert.ok(text(doc.body).includes(p.title), p.title);
+  const shown = articles.filter((a) => a.data.draft !== 'true');
+  assert.equal(doc.querySelectorAll('.feed .piece').length, shown.length);
+  for (const a of shown) assert.ok(text(doc.body).includes(a.data.title), a.data.title);
+  // only pieces with an article page are linked
+  for (const a of shown) {
+    const link = [...doc.querySelectorAll('.feed .piece h3 a')].find((l) => text(l) === a.data.title);
+    assert.equal(Boolean(link), a.data.status !== 'announced', a.data.title);
+  }
   assert.equal(doc.querySelectorAll('[data-filter]').length, obsidian.series.length + 1);
   assert.equal(doc.querySelectorAll('.feed .featured').length, 1);
 });
@@ -161,4 +179,48 @@ test('T-17 security headers file', () => {
 test('T-05 brand: lava is never a text colour on light grounds except the display subtitle', () => {
   const textUses = [...css().matchAll(/([^{}]+)\{[^{}]*[{;]?color:var\(--color-lava\)[^{}]*\}/g)].map((m) => m[1].trim());
   assert.deepEqual(textUses.filter((s) => !/doc-subtitle/.test(s)), []);
+});
+
+test('collection: every article has a valid schema and the featured piece exists once', () => {
+  const series = obsidian.series.map((x) => x.slug);
+  const orders = new Set();
+  for (const a of articles) {
+    for (const k of ['title', 'standfirst', 'series', 'order']) assert.ok(a.data[k], `${a.id}.${k}`);
+    assert.ok(series.includes(a.data.series), `${a.id} series`);
+    assert.ok(['published', 'placeholder', 'announced'].includes(a.data.status ?? 'announced'), `${a.id} status`);
+    assert.ok(!orders.has(a.data.order), `${a.id} duplicate order`);
+    orders.add(a.data.order);
+  }
+  assert.equal(articles.filter((a) => a.data.featured === 'true').length, 1);
+});
+
+test('T-31 announced and draft pieces have no page; live pieces do', () => {
+  for (const a of articles) {
+    const has = existsSync(`dist/obsidian/${a.id}/index.html`);
+    assert.equal(has, live.includes(a), a.id);
+  }
+});
+
+test('article template: header, draft marking, disclaimer, noindex, sitemap', () => {
+  const placeholders = live.filter((a) => a.data.status === 'placeholder');
+  assert.ok(placeholders.length >= 1);
+  for (const a of live) {
+    const path = `/obsidian/${a.id}/`;
+    const { doc } = load(path);
+    assert.equal(text(doc.querySelector('h1')), a.data.title);
+    assert.ok(text(doc.querySelector('.article-head')).includes(a.data.standfirst));
+    assert.ok(doc.querySelector('.article-body'));
+    // FR-23: closes with the standard disclaimer and the commentary line
+    const end = text(doc.querySelector('.article-end'));
+    assert.ok(end.includes(site.notice.body) && end.includes('OBSIDIAN is commentary, not investment research or advice.'));
+    const map = readFileSync('dist/sitemap-0.xml', 'utf8');
+    if (a.data.status === 'placeholder') {
+      assert.ok(doc.querySelector('.draft-chip'), 'visible draft chip');
+      assert.match(text(doc.querySelector('.article-body')), /DRAFT — PLACEHOLDER TEXT/);
+      assert.ok(doc.querySelector('meta[name="robots"][content="noindex"]'), 'noindex');
+      assert.ok(!map.includes(path), 'not in sitemap');
+    } else {
+      assert.ok(map.includes(path), 'published pieces are in the sitemap');
+    }
+  }
 });

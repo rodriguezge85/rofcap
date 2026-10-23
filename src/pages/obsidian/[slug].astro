@@ -1,0 +1,58 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ObsidianBand from '../../components/ObsidianBand.astro';
+import { seriesLabel } from '../../content/obsidian';
+import { site } from '../../content/site';
+import { getPieces, metaLine, type Piece } from '../../lib/obsidian';
+
+export async function getStaticPaths() {
+  const live = (await getPieces()).filter((p) => p.href);
+  return live.map((piece, i) => ({
+    params: { slug: piece.id },
+    props: { piece, prev: live[i - 1], next: live[i + 1] },
+  }));
+}
+
+interface Props { piece: Piece; prev?: Piece; next?: Piece }
+const { piece, prev, next } = Astro.props;
+const { Content } = await render(piece.entry);
+const meta = metaLine(piece);
+---
+<BaseLayout
+  title={`${piece.title} · OBSIDIAN · ${site.name}`}
+  description={piece.standfirst}
+  header="light"
+  current="obsidian"
+  noindex={piece.placeholder || undefined}
+>
+  <ObsidianBand as="p">
+    <div class="ob-intro article-head">
+      <div class="wrap">
+        <p class="kicker">
+          {seriesLabel(piece.series)}
+          {piece.placeholder && <span class="draft-chip">Draft · placeholder text</span>}
+        </p>
+        <h1>{piece.title}</h1>
+        <p class="on-dark-lead">{piece.standfirst}</p>
+        {meta && <p class="on-dark-small article-meta">{meta}</p>}
+      </div>
+    </div>
+  </ObsidianBand>
+
+  <div class="wrap article-wrap">
+    <article class="article-body">
+      <Content />
+    </article>
+
+    <aside class="article-end" aria-label="Disclaimer">
+      <p><strong>{site.notice.lead}</strong> {site.notice.body}</p>
+    </aside>
+
+    <nav class="article-nav" aria-label="More from OBSIDIAN">
+      <a class="back" href="/obsidian/">← All pieces</a>
+      {prev && <a href={prev.href} rel="prev"><span>Previous</span>{prev.title}</a>}
+      {next && <a href={next.href} rel="next"><span>Next</span>{next.title}</a>}
+    </nav>
+  </div>
+</BaseLayout>
