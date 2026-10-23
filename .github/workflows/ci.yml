@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect scaffold
+        id: scaffold
+        run: |
+          if [ -f package.json ]; then echo "present=true" >> "$GITHUB_OUTPUT"; else echo "present=false" >> "$GITHUB_OUTPUT"; fi
+
+      - uses: actions/setup-node@v4
+        if: steps.scaffold.outputs.present == 'true'
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install
+        if: steps.scaffold.outputs.present == 'true'
+        run: npm ci
+
+      - name: Generate tokens
+        if: steps.scaffold.outputs.present == 'true'
+        run: npm run tokens --if-present
+
+      - name: Lint, typecheck, contrast
+        if: steps.scaffold.outputs.present == 'true'
+        run: npm run check --if-present
+
+      - name: Build
+        if: steps.scaffold.outputs.present == 'true'
+        run: npm run build --if-present
+
+      - name: Test (content parity, a11y structure, SEO, headers)
+        if: steps.scaffold.outputs.present == 'true'
+        run: npm test
+
+      - name: Audit dependencies
+        if: steps.scaffold.outputs.present == 'true'
+        run: npm audit --audit-level=high
+
+      - name: Docs-only commit
+        if: steps.scaffold.outputs.present == 'false'
+        run: echo "No package.json yet (documentation phase). Nothing to build."
+
+  # Still to add: e2e + visual (Playwright), lighthouse (LHCI), links (lychee).

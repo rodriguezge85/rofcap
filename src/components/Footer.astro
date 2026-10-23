@@ -1,0 +1,13 @@
+---
+import { site } from '../content/site';
+---
+<footer>
+  <div class="wrap">
+    <img src="/rofcap-mark.svg" alt="" width="38" height="38" />
+    <div class="footer-text">
+      <p><strong>{site.legalName}</strong></p>
+      <p>{site.address.lines.join(', ')}</p>
+      <p>{site.notice} · <a href={site.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></p>
+    </div>
+  </div>
+</footer>

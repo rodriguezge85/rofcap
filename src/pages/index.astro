@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import { site } from '../content/site';
+
+// Renders **bold** runs from the copy deck as <strong>.
+const withEmphasis = (text: string) =>
+  text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? `<strong>${part}</strong>` : part)).join('');
+---
+<BaseLayout>
+  <Hero />
+  <div class="wrap">
+    <section aria-labelledby="firm">
+      <h2 class="section-heading" id="firm">The Firm</h2>
+      <div class="card statement">
+        {site.statement.map((p) => <p set:html={withEmphasis(p)} />)}
+      </div>
+    </section>
+
+    <section aria-labelledby="contact">
+      <h2 class="section-heading" id="contact">Contact</h2>
+      <div class="card contact">
+        <div>
+          <h3>{site.legalName}</h3>
+          <address>
+            {site.address.lines.map((line) => <span>{line}<br /></span>)}
+          </address>
+        </div>
+        <div>
+          <h3>Follow</h3>
+          <p><a href={site.linkedin} target="_blank" rel="noopener noreferrer">{site.shortName} on LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></p>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

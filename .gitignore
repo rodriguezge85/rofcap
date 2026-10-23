@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+.output/
+.vercel/
+.netlify/
+.wrangler/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated (rebuilt by `npm run tokens`)
+src/styles/tokens.css
+
+# Test and tooling artifacts
+coverage/
+playwright-report/
+test-results/
+.lighthouseci/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

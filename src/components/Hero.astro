@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../content/site';
+
+// Drop the approved lead photograph at src/assets/photography/eruption-night.jpg.
+// Without it the hero falls back to the solid obsidian field.
+const photos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/photography/eruption-night.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+const photo = Object.values(photos)[0]?.default;
+---
+<div class="hero">
+  {photo && (
+    <Image class="hero-photo" src={photo} alt="" widths={[640, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" format="webp" />
+  )}
+  <div class="wrap">
+    <h1>{site.hero.title}</h1>
+    <p class="hero-sub">{site.hero.subtitle}</p>
+  </div>
+</div>
