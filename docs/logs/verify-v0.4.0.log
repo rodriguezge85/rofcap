@@ -1,0 +1,236 @@
+# verify log — v0.4.0 — 2026-10-23 06:42 UTC
+# node v22.22.3, npm 10.9.8
+
+
+> rofcap-website@0.2.0 verify
+> npm run check && npm run build && npm test
+
+
+> rofcap-website@0.2.0 check
+> npm run tokens && npm run check:contrast && astro check
+
+
+> rofcap-website@0.2.0 tokens
+> node scripts/tokens.mjs
+
+
+> rofcap-website@0.2.0 check:contrast
+> node scripts/check-contrast.mjs
+
+ok   ink on bg: 9.17:1 (min 4.5)
+ok   ink on card: 10.44:1 (min 4.5)
+ok   strong on card: 13.51:1 (min 4.5)
+ok   muted on card: 6.10:1 (min 4.5)
+ok   muted on bg: 5.35:1 (min 4.5)
+ok   navy on card: 6.46:1 (min 4.5)
+ok   navy on bg: 5.67:1 (min 4.5)
+ok   navy-700 on card: 7.59:1 (min 4.5)
+ok   white on obsidian: 21.00:1 (min 4.5)
+ok   lava on obsidian: 5.60:1 (min 3)
+ok   on-dark-body on navy-900: 9.06:1 (min 4.5)
+ok   on-dark-muted on navy-900: 6.53:1 (min 4.5)
+ok   lava-700 on lava-50: 4.53:1 (min 4.5)
+ok   on-dark-item on obsidian: 16.62:1 (min 4.5)
+ok   on-dark-muted on obsidian: 12.82:1 (min 4.5)
+ok   lava-300 on obsidian: 9.37:1 (min 4.5)
+ok   lava on card-soft: 3.46:1 (min 3)
+ok   lava on bg: 3.29:1 (min 3)
+ok   muted on card-soft: 5.63:1 (min 4.5)
+14:42:25 [content] Syncing content
+14:42:25 [content] Synced content
+14:42:25 [types] Generated 269ms
+14:42:25 [check] Getting diagnostics for Astro files in /Users/oliveripsioco/Downloads/rofcap-website-rebuild...
+Result (22 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+
+> rofcap-website@0.2.0 build
+
+
+> rofcap-website@0.2.0 tokens
+> node scripts/tokens.mjs
+
+14:42:28 [content] Syncing content
+14:42:28 [content] Synced content
+14:42:28 [types] Generated 252ms
+14:42:28 [build] output: "static"
+14:42:28 [build] mode: "static"
+14:42:28 [build] directory: /Users/oliveripsioco/Downloads/rofcap-website-rebuild/dist/
+14:42:28 [build] Collecting build info...
+14:42:28 [build] ✓ Completed in 277ms.
+14:42:28 [build] Building static entrypoints...
+14:42:28 [vite] ✓ built in 142ms
+14:42:28 [vite] ✓ built in 11ms
+14:42:28 [build] Rearranging server assets...
+
+ generating static routes 
+14:42:28   ├─ /404.html (+6ms) 
+14:42:28   ├─ /about/index.html (+3ms) 
+14:42:28   ├─ /obsidian/where-pressure-builds/index.html (+6ms) 
+14:42:28   ├─ /obsidian/index.html (+3ms) 
+14:42:28   ├─ /index.html (+2ms) 
+14:42:28 ✓ Completed in 33ms.
+
+ generating optimized images 
+14:42:28   ▶ /_astro/eruption-night.DR2PeRkS_1zFfPJ.webp (reused cache entry) (+1ms) (1/4)
+14:42:28   ▶ /_astro/eruption-night.DR2PeRkS_eggxl.webp (reused cache entry) (+1ms) (2/4)
+14:42:28   ▶ /_astro/eruption-night.DR2PeRkS_1VHII3.webp (reused cache entry) (+1ms) (3/4)
+14:42:28   ▶ /_astro/eruption-night.DR2PeRkS_1ISoPD.webp (reused cache entry) (+1ms) (4/4)
+14:42:28 ✓ Completed in 3ms.
+
+14:42:28 [build] ✓ Completed in 209ms.
+14:42:28 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+14:42:28 [build] 5 page(s) built in 490ms
+14:42:28 [build] Complete!
+
+> rofcap-website@0.2.0 test
+> node --experimental-strip-types --test tests/*.test.mjs
+
+TAP version 13
+# Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+# Subtest: T-01 home hero copy matches the design
+ok 1 - T-01 home hero copy matches the design
+  ---
+  duration_ms: 52.965125
+  type: 'test'
+  ...
+# Subtest: T-02 home body copy: who we are, ring of fire stats, services
+ok 2 - T-02 home body copy: who we are, ring of fire stats, services
+  ---
+  duration_ms: 11.967333
+  type: 'test'
+  ...
+# Subtest: T-02b framework: seven stages, caldera, four disciplines on home and about
+ok 3 - T-02b framework: seven stages, caldera, four disciplines on home and about
+  ---
+  duration_ms: 22.134291
+  type: 'test'
+  ...
+# Subtest: T-02c about copy matches
+ok 4 - T-02c about copy matches
+  ---
+  duration_ms: 8.090375
+  type: 'test'
+  ...
+# Subtest: T-02d obsidian index lists all pieces with series filter
+ok 5 - T-02d obsidian index lists all pieces with series filter
+  ---
+  duration_ms: 11.819291
+  type: 'test'
+  ...
+# Subtest: T-03 legal entity, address, email and notice on every page
+ok 6 - T-03 legal entity, address, email and notice on every page
+  ---
+  duration_ms: 37.016959
+  type: 'test'
+  ...
+# Subtest: T-04 external links are safe and point to LinkedIn
+ok 7 - T-04 external links are safe and point to LinkedIn
+  ---
+  duration_ms: 27.340166
+  type: 'test'
+  ...
+# Subtest: internal links resolve to built pages or anchors
+ok 8 - internal links resolve to built pages or anchors
+  ---
+  duration_ms: 103.120708
+  type: 'test'
+  ...
+# Subtest: T-06 no third-party requests or fonts; scripts are same-origin only
+ok 9 - T-06 no third-party requests or fonts; scripts are same-origin only
+  ---
+  duration_ms: 23.447375
+  type: 'test'
+  ...
+# Subtest: T-09 structure: one h1, landmarks, skip link, lang, nav current
+ok 10 - T-09 structure: one h1, landmarks, skip link, lang, nav current
+  ---
+  duration_ms: 38.274958
+  type: 'test'
+  ...
+# Subtest: T-12 images are decorative or have alt text
+ok 11 - T-12 images are decorative or have alt text
+  ---
+  duration_ms: 26.133625
+  type: 'test'
+  ...
+# Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+# Subtest: axe: no violations on / (colour contrast is covered by check:contrast)
+ok 12 - axe: no violations on / (colour contrast is covered by check:contrast)
+  ---
+  duration_ms: 171.720833
+  type: 'test'
+  ...
+# Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+# Subtest: axe: no violations on /about/ (colour contrast is covered by check:contrast)
+ok 13 - axe: no violations on /about/ (colour contrast is covered by check:contrast)
+  ---
+  duration_ms: 94.344834
+  type: 'test'
+  ...
+# Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+# Subtest: axe: no violations on /obsidian/ (colour contrast is covered by check:contrast)
+ok 14 - axe: no violations on /obsidian/ (colour contrast is covered by check:contrast)
+  ---
+  duration_ms: 55.8365
+  type: 'test'
+  ...
+# Subtest: axe: no violations on /obsidian/where-pressure-builds/ (colour contrast is covered by check:contrast)
+ok 15 - axe: no violations on /obsidian/where-pressure-builds/ (colour contrast is covered by check:contrast)
+  ---
+  duration_ms: 45.538958
+  type: 'test'
+  ...
+# Subtest: T-15 metadata and structured data per page
+ok 16 - T-15 metadata and structured data per page
+  ---
+  duration_ms: 33.777458
+  type: 'test'
+  ...
+# Subtest: T-16 robots, sitemap and 404
+ok 17 - T-16 robots, sitemap and 404
+  ---
+  duration_ms: 0.288
+  type: 'test'
+  ...
+# Subtest: T-17 security headers file
+ok 18 - T-17 security headers file
+  ---
+  duration_ms: 0.078416
+  type: 'test'
+  ...
+# Subtest: T-05 brand: lava is never a text colour on light grounds except the display subtitle
+ok 19 - T-05 brand: lava is never a text colour on light grounds except the display subtitle
+  ---
+  duration_ms: 2.075666
+  type: 'test'
+  ...
+# Subtest: collection: every article has a valid schema and the featured piece exists once
+ok 20 - collection: every article has a valid schema and the featured piece exists once
+  ---
+  duration_ms: 0.16875
+  type: 'test'
+  ...
+# Subtest: T-31 announced and draft pieces have no page; live pieces do
+ok 21 - T-31 announced and draft pieces have no page; live pieces do
+  ---
+  duration_ms: 0.05375
+  type: 'test'
+  ...
+# Subtest: article template: header, draft marking, disclaimer, noindex, sitemap
+ok 22 - article template: header, draft marking, disclaimer, noindex, sitemap
+  ---
+  duration_ms: 5.751916
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1272.033583
