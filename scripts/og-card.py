@@ -1,6 +1,6 @@
 """Render public/og-card.png (1200x630) from the self-hosted Raleway files.
 
-Uses the placeholder mark geometry; re-run after the approved mark replaces it.
+Uses public/rofcap-mark.png and the hero photograph (translucent over obsidian).
 Usage: python3 scripts/og-card.py
 """
 import struct, zlib, io, os
@@ -41,12 +41,18 @@ W, H = 1200, 630
 img = Image.new('RGB', (W, H), '#000000')
 d = ImageDraw.Draw(img)
 
-# placeholder mark on a solid field (never on a photograph)
-cx, cy, r = 130, 120, 44
-d.ellipse((cx - r, cy - r, cx + r, cy + r), outline='#FFFFFF', width=6)
-d.polygon([(cx - 28, cy + 18), (cx, cy - 24), (cx + 28, cy + 18)], fill='#FFFFFF')
-tracked(d, (200, 88), 'ROFCAP', font('800-normal', 40), '#FFFFFF', 5)
-d.text((200, 140), 'Ring of Fire Capital Ventures Limited', font=font('500-normal', 22), fill='#CBD7E6')
+# photograph: background only, translucent over obsidian, never behind the mark
+photo = Image.open('src/assets/photography/eruption-night.webp').convert('RGB')
+ph = photo.resize((W, int(photo.height * W / photo.width)), Image.LANCZOS).crop((0, 0, W, H))
+img = Image.blend(img, ph, 0.38)
+d = ImageDraw.Draw(img)
+
+# mark on a solid field
+d.rectangle((60, 60, 188, 188), fill='#000000')
+mark = Image.open('public/rofcap-mark.png').convert('RGBA').resize((104, 104), Image.LANCZOS)
+img.paste(mark, (72, 72), mark)
+tracked(d, (212, 88), 'ROFCAP', font('800-normal', 40), '#FFFFFF', 5)
+d.text((212, 140), 'Ring of Fire Capital Ventures Limited', font=font('500-normal', 22), fill='#CBD7E6')
 
 d.text((80, 270), 'Seizing Seismic', font=font('800-normal', 84), fill='#FFFFFF')
 d.text((80, 365), 'Opportunities', font=font('800-normal', 84), fill='#FFFFFF')

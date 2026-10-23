@@ -85,7 +85,7 @@ test('T-15 metadata and structured data', () => {
   assert.equal(ld.legalName, site.legalName);
   assert.deepEqual(ld.sameAs, [site.linkedin]);
   // every locally referenced og/icon asset exists
-  for (const f of ['og-card.png', 'favicon.svg', 'rofcap-mark.svg', 'rofcap-mark-on-dark.svg']) {
+  for (const f of ['og-card.png', 'favicon.png', 'apple-touch-icon.png', 'rofcap-mark.png', 'rofcap-mark-96.png']) {
     assert.ok(existsSync(`dist/${f}`), f);
   }
 });

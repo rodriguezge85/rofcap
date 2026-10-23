@@ -25,7 +25,7 @@ const jsonLd = {
   name: site.name,
   legalName: site.legalName,
   url: site.url,
-  logo: new URL('/rofcap-mark.svg', site.url).href,
+  logo: new URL('/rofcap-mark.png', site.url).href,
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.address.street,
@@ -45,7 +45,8 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
